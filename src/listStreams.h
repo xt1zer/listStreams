@@ -191,9 +191,11 @@ public:
 			}
 			// if several nodes have same surname then skip the lower numbers
 			// string::compare returns 0 if strings are equal
-			while (name.compare(current->getSurname()) == 0 && current->getNumber() < num
-				&& !current->getNextBySurname())
+			while (current) {
+				if (name.compare(current->getSurname()) != 0 || current->getNumber() >= num)
+					break;
 				current = current->getNextBySurname();
+			}
 			pushByName(newNode, current);
 
 			// then connect by number
