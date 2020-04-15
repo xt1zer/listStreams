@@ -145,7 +145,7 @@ void menu(ListStreams &list) {
 		std::cout << "0. Print list\n";
 		std::cout << "1. Push node\n";
 		std::cout << "2. Find and pop node by number\n";
-		std::cout << "3. Find and pop node by surname\n";
+		std::cout << "3. Find and pop node by surname (first occurance)\n";
 		std::cout << "4. Find number by surname\n";
 		std::cout << "5. Find surname by number\n";
 		std::cout << "6. Clear list\n";
