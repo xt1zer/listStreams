@@ -58,7 +58,17 @@ private:
     void pop(Iterator popAfterByName, Iterator popAfterByNum) {
         Iterator toDelete = popAfterByName->getNextBySurname();
         popAfterByName->setNextBySurname(popAfterByName->getNextBySurname()->getNextBySurname());
+	if(popAfterByName == head)
+	    head->setSurname(popAfterByName->getNextBySurname()->getSurname());
+	if(popAfterByName->getNextBySurname() == tail)
+	    tail->setSurname(popAfterByName->getSurname());
+	
         popAfterByNum->setNextByNumber(popAfterByNum->getNextByNumber()->getNextByNumber());
+	if(popAfterByNum == head)
+	    popAfterByNum->setNumber(popAfterByNum->getNextByNumber()->getNumber());
+	if(popAfterByNum->getNextByNumber() == tail)
+	    tail->setNumber(popAfterByNum->getNumber());
+	
         delete toDelete;
     }
 
@@ -100,20 +110,23 @@ public:
         if (isEmpty()) return -1;
 
         // find node to pop
-        Iterator popAfterByName = head;
-        while (popAfterByName != tail) {
-            if (name.compare(popAfterByName->getNextBySurname()->getSurname()) == 0)
+        Iterator popAfterByName = head, next = popAfterByName->getNextBySurname();
+        while (next != tail) {
+            if (name.compare(next->getSurname()) == 0)
                 break;
-            popAfterByName = popAfterByName->getNextBySurname();
+            popAfterByName = next;
+	    next = next->getNextBySurname();
         }
-        if (popAfterByName == tail) return 1; // node not found
+        if (next == tail) return 1; // node not found
 
         // find node in number stream
         Iterator popAfterByNumber = head;
-        while (popAfterByNumber != tail) {
-            if (popAfterByNumber->getNextByNumber() == popAfterByName->getNextBySurname())
+	next = popAfterByNumber->getNextByNumber();
+        while (next != tail) {
+            if (next == popAfterByName->getNextBySurname())
                 break;
-            popAfterByNumber = popAfterByNumber->getNextByNumber();
+            popAfterByNumber = next;
+	    next = next->getNextByNumber();
         }
 
         pop(popAfterByName, popAfterByNumber);
@@ -125,20 +138,23 @@ public:
         if (isEmpty()) return -1;
 
         // find node to pop
-        Iterator popAfterByNum = head;
-        while (popAfterByNum != tail) {
-            if (popAfterByNum->getNextByNumber()->getNumber() == num)
+        Iterator popAfterByNum = head, next = popAfterByNum->getNextByNumber();
+        while (next != tail) {
+            if (next->getNumber() == num)
                 break;
-            popAfterByNum = popAfterByNum->getNextByNumber();
+            popAfterByNum = next;
+	    next = next->getNextByNumber();
         }
-        if (popAfterByNum == tail) return 1; // node not found
+        if (next == tail) return 1; // node not found
 
         // find node in surname stream
         Iterator popAfterByName = head;
-        while (popAfterByName != tail) {
-            if (popAfterByName->getNextBySurname() == popAfterByNum->getNextByNumber())
+	next = popAfterByName->getNextBySurname();
+        while (next != tail) {
+            if (next == popAfterByNum->getNextByNumber())
                 break;
-            popAfterByName = popAfterByName->getNextBySurname();
+            popAfterByName = next;
+	    next = next->getNextBySurname();
         }
 
         pop(popAfterByName, popAfterByNum);
@@ -180,7 +196,8 @@ public:
     void push(const string &name, const unsigned int &num) {
         Node *newNode = new Node(name, num);
         if (isEmpty()) {
-            head = tail = new Node(*newNode);
+            head = new Node(*newNode);
+	    tail = new Node(*newNode);
             head->setNextBySurname(newNode);
             head->setNextByNumber(newNode);
             newNode->setNextBySurname(tail);
@@ -189,19 +206,17 @@ public:
             // first connect by surname
             Iterator current = head, next = current->getNextBySurname();
             while (next != tail) {
-                // if name <= current node's name
-                if (name.compare(next->getSurname()) != 1)
+                // if name < current node's name
+                if (name.compare(next->getSurname()) <= 0)
                     break;
                 current = next;
                 next = next->getNextBySurname();
             }
             // if several nodes have same surname then skip the lower numbers
             // string::compare returns 0 if strings are equal
-            while (next != tail) {
-                if (name.compare(next->getSurname()) != 0 || next->getNumber() >= num)
-                    break;
-                current = next;
-                next = next->getNextBySurname();
+            while (name.compare(next->getSurname()) == 0) {
+		    current = next;
+		    next = next->getNextBySurname();
             }
             pushByName(newNode, current);
 
