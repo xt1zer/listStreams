@@ -12,20 +12,20 @@ void choice(const int &c, ListStreams &list) {
 	    if (list.isEmpty())
 		std::cout << "List is empty\n";
 	    else {
-		ListStreams::Iterator it = list.getHead();
+		ListStreams::Iterator it = list.getHead()->getNextBySurname();
 		std::cout << "List sorted by surname\n";
 		while (it->getNextBySurname()) {
 		    std::cout << it->getSurname() << " ";
-		    std::cout << it->getNumber() << std::endl;
+		    std::cout << it->getNumber() << "\n";
 		    it = it->getNextBySurname();
 		}
 		std::cout << "\n\n";
 
-		it = list.getHead();
+		it = list.getHead()->getNextByNumber();
 		std::cout << "List sorted by number\n";
 		while (it->getNextByNumber()) {
 		    std::cout << it->getNumber() << " ";
-		    std::cout << it->getSurname() << std::endl;
+		    std::cout << it->getSurname() << "\n";
 		    it = it->getNextByNumber();
 		}
 		std::cout << "\n\n";
