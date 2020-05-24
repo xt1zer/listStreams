@@ -25,7 +25,7 @@ void clearScreen() {
         &count
     )) return;
 
-/* Fill the entire buffer with the current colors and attributes */
+/* Fill the entire buffer with the current colours and attributes */
     if (!FillConsoleOutputAttribute(
         hStdOut,
         csbi.wAttributes,
