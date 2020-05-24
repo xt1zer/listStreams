@@ -20,7 +20,7 @@ TEST_F(ListStreams, FillList) {
 		l->push(std::string(1, 'A' + i), i);
 		++size;
 	}
-	ListStreams::Iterator it = l->getHeadName();
+	ListStreams::Iterator it = l->getHead();
 	EXPECT_EQ(it->getSurname(), "A");
 	EXPECT_EQ(it->getNumber(), 0);
 	while (it)
