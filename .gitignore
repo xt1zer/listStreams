@@ -354,3 +354,16 @@ MigrationBackup/
 .kdev4/
 build/
 listStreams.kdev4
+
+# CMake stuff
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Makefiles
+Makefile
+
+# NetBeans stuff
+compile_commands.json
+nbproject/
+
